@@ -619,5 +619,35 @@ namespace IWSK_RS232
                 
             }
         }
+
+        private void readFrameListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void readRawDataRichTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void filePathTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sendTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
