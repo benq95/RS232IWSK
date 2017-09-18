@@ -6,3 +6,5 @@ C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS23
 C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK-RS232.csproj.GenerateResource.Cache
 C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK-RS232.exe
 C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK-RS232.pdb
+C:\Users\MM27P\Desktop\IO SHIT\IWSK\IWSK\RS232IWSK\ScrollBar\IWSK-RS232\obj\x86\Debug\IWSK-RS232.exe
+C:\Users\MM27P\Desktop\IO SHIT\IWSK\IWSK\RS232IWSK\ScrollBar\IWSK-RS232\obj\x86\Debug\IWSK-RS232.pdb
