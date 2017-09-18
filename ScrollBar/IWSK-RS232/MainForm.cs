@@ -43,6 +43,7 @@ namespace IWSK_RS232
             radioButton1.CheckedChanged += this.master_changed;
             radioButton2.CheckedChanged += this.slave_changed;
             radioButton3.CheckedChanged += this.customMessage_changed;
+            numericUpDown3.ValueChanged += this.onFrameTimeoutChanged;
 
             this.panel1.Enabled = true;
             this.panel5.Enabled = false;
@@ -230,13 +231,14 @@ namespace IWSK_RS232
                     }, readRawDataRichTextBox);
                 return;
             }
-            if(radioButton2.Checked)
+            if (radioButton2.Checked)
             {
-                if(!StringParser.CheckModbusMessage(data, (byte)numericUpDown5.Value))
+
+                if (!StringParser.CheckModbusMessage(data, (byte)numericUpDown5.Value))
                 {
                     return;
                 }
-                if(data[4]==50)
+                if (data[4] == 50)
                 {
                     this.SendMsg(2, (byte)numericUpDown5.Value);
                     return;
@@ -248,7 +250,7 @@ namespace IWSK_RS232
                 {
                     return;
                 }
-                if(!waitForResponse)
+                if (!waitForResponse)
                 {
                     return;
                 }
@@ -261,6 +263,7 @@ namespace IWSK_RS232
                 richTextBox2.AppendText(msg);
                 parser.AppendToParser(data);
             }, richTextBox2);
+
         }
 
         private void InitTransaction(int time)
@@ -505,6 +508,7 @@ namespace IWSK_RS232
                 this.groupBox6.Enabled = false;
                 this.panel1.Enabled = false;
                 this.panel5.Enabled = true;
+                RS232Port.modbusEnable = true;
                 
             } else
             {
@@ -514,6 +518,7 @@ namespace IWSK_RS232
                 this.panel1.Enabled = true;
                 this.panel5.Enabled = false;
                 this.button5.Enabled = false;
+                RS232Port.modbusEnable = false;
             }
         }
 
@@ -528,6 +533,7 @@ namespace IWSK_RS232
             {
                 this.panel2.Enabled = true;
                 this.button5.Enabled = connected ? true : false;
+                RS232Port.setFrameTimeout(this.numericUpDown3.Value > 0 ? (int)this.numericUpDown3.Value : 1);
             }
         }
 
@@ -540,6 +546,7 @@ namespace IWSK_RS232
             else
             {
                 this.panel3.Enabled = true;
+                RS232Port.setFrameTimeout(this.numericUpDown4.Value > 0 ? (int)this.numericUpDown4.Value : 1);
             }
         }
 
@@ -596,6 +603,21 @@ namespace IWSK_RS232
                 
             }
             return true;
+        }
+
+        private void onFrameTimeoutChanged(object sender, EventArgs e)
+        {
+            if(rsPort != null)
+            {
+                if (radioButton1.Checked)
+                {
+                    RS232Port.setFrameTimeout(this.numericUpDown3.Value > 0 ? (int)this.numericUpDown3.Value : 1);
+                } else
+                {
+                    RS232Port.setFrameTimeout(this.numericUpDown4.Value > 0 ? (int)this.numericUpDown4.Value : 1);
+                }
+                
+            }
         }
     }
 }

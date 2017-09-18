@@ -55,10 +55,13 @@ namespace IWSK_RS232
         private static StopBits[] stopBitsArray = { StopBits.One, /*StopBits.OnePointFive,*/ StopBits.Two };
         private List<byte> readBytes = new List<byte>();
         private System.Windows.Forms.Timer transactionTimer = new System.Windows.Forms.Timer();
+        private static System.Windows.Forms.Timer frameTimer = new System.Windows.Forms.Timer();
+        private List<byte> frame = new List<byte>();
         private bool isTransaction = false;
         private bool transactionSuccess = true;
         private bool dtrEnable = false;
         private bool rtsEnable = false;
+        public static bool modbusEnable = false;
 
         public RS232Port()
         {
@@ -68,6 +71,12 @@ namespace IWSK_RS232
                 transactionSuccess = false;
                 isTransaction = false; 
             };
+            frameTimer.Tick += (sender, e) =>
+            {
+                frameTimer.Stop();
+                frame.Clear();
+            };
+            frameTimer.Interval = 1;
         }
 
         public void SetConnectionParameters(string portName, int baudRate, Parity parity = Parity.None, int dataBits = 8, StopBits stopBits = StopBits.None)
@@ -77,6 +86,11 @@ namespace IWSK_RS232
             this.parity = parity;
             this.dataBits = dataBits;
             this.stopBits = stopBits;
+        }
+
+        public static void setFrameTimeout(int timeout)
+        {
+            frameTimer.Interval = timeout;
         }
 
         public bool Connect()
@@ -157,25 +171,59 @@ namespace IWSK_RS232
 
         public void port_DataReceived(object sender, EventArgs e)
         {
-            transactionTimer.Stop();
             
-            if (isTransaction)
-            {
-                isTransaction = false;
-                OnTransactionFinished(new TransactionEventArgs(true));
-            }
             int toRead = serialPort.BytesToRead;
             byte[] buffer = new byte[toRead];
 
             serialPort.Read(buffer, 0, toRead);
-            if(transactionSuccess)
+            if (modbusEnable)
             {
-                readBytes.AddRange(buffer);
-                OnDataReceived(EventArgs.Empty);
-            }
-            transactionSuccess = true;
+                frame.AddRange(buffer);
+                if (frame.Count > 1)
+                {
 
-            
+                    int crIndex = frame.FindIndex((byte x) => { return x == 13; });
+                    if (crIndex != -1)
+                    {
+                        if ((frame.Count - 1) != crIndex)
+                        {
+                            if (frame[crIndex + 1] == 10)
+                            {
+                                transactionTimer.Stop();
+
+                                if (isTransaction)
+                                {
+                                    isTransaction = false;
+                                    OnTransactionFinished(new TransactionEventArgs(true));
+                                }
+                                if (transactionSuccess)
+                                {
+                                    readBytes.AddRange(buffer);
+                                    OnDataReceived(EventArgs.Empty);
+                                }
+                                transactionSuccess = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+                frameTimer.Start();
+            } else
+            {
+                transactionTimer.Stop();
+
+                if (isTransaction)
+                {
+                    isTransaction = false;
+                    OnTransactionFinished(new TransactionEventArgs(true));
+                }
+                if (transactionSuccess)
+                {
+                    readBytes.AddRange(buffer);
+                    OnDataReceived(EventArgs.Empty);
+                }
+                transactionSuccess = true;
+            }
         }
 
         public void port_PinChanged(object sender, SerialPinChangedEventArgs e)
