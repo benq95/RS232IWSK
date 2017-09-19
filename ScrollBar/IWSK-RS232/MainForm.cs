@@ -649,5 +649,10 @@ namespace IWSK_RS232
         {
 
         }
+
+        private void panel5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
