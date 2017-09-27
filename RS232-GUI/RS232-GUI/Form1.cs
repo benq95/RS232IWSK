@@ -121,11 +121,11 @@ namespace RS232_GUI
 
         private void ReloadPorts()
         {
-            PortList.DataSource = SerialPort.GetPortNames();
+            portComboBox.DataSource = SerialPort.GetPortNames();
 
-            if (PortList.Items.Count > 0)
+            if (portComboBox.Items.Count > 0)
             {
-                PortList.SelectedIndex = 0;
+                portComboBox.SelectedIndex = 0;
                 ConnectButton.Enabled = true;
             }
             else
@@ -396,7 +396,7 @@ namespace RS232_GUI
                     stopBits = StopBits.Two;
                     break;
             }
-            serialPort = new SerialPort(PortList.SelectedItem.ToString(),
+            serialPort = new SerialPort(portComboBox.SelectedItem.ToString(),
                 Convert.ToInt32(SettingSpeedComboBox.Text),
                     parity,
                     Convert.ToInt32(SettingDataPoolComboBox.SelectedItem),
