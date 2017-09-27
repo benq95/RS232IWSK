@@ -121,6 +121,9 @@ namespace RS232_GUI
 
 
 
+        #region Śmieci
+
+
         private void OnDataReceived(object sender, EventArgs e)
         {
 
@@ -226,6 +229,7 @@ namespace RS232_GUI
 
         }
 
+        #endregion
         private void ConnectPing_Click(object sender, EventArgs e)
         {
        
@@ -234,11 +238,12 @@ namespace RS232_GUI
                 serialPort.Dispose();   // cannot wait for a garbage collector
             if (ConnectButton.Text == "Rozłącz")
             {
-                DisableSettingsFunction();
-                EnableConnectingFunction();
+                EnableSettingsFunction();
+                DisableConnectFunction();
                 ConnectButton.Text = "Połącz";
                 return;
             }
+            SetControlEnum();
             int parityIndex = SettingParityComboBox.SelectedIndex;
             Parity parity = Parity.None;
             switch (parityIndex)
@@ -282,8 +287,8 @@ namespace RS232_GUI
                     LogMessage("Nie można połączyć z portem.");
                     return;
                 }
-                DisableConnectFunction();
-                EnableSettingsFunction();
+                EnableConnectingFunction();
+                DisableSettingsFunction();
                 ConnectButton.Text = "Rozłącz";
 
 
@@ -322,7 +327,7 @@ namespace RS232_GUI
 
         private void SettingControlFlewComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetControlEnum();
+          
         }
     }
 }
