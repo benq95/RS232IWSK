@@ -1,8 +1,0 @@
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\bin\Debug\IWSK-RS232.exe
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\bin\Debug\IWSK-RS232.pdb
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK-RS232.csprojResolveAssemblyReference.cache
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK_RS232.MainForm.resources
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK_RS232.Properties.Resources.resources
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK-RS232.csproj.GenerateResource.Cache
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK-RS232.exe
-C:\Users\Wojtek\Documents\Visual Studio 2015\Projects\iwsk-rs232client\IWSK-RS232\obj\x86\Debug\IWSK-RS232.pdb
