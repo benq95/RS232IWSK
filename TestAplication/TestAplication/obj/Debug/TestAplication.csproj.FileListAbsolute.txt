@@ -1,0 +1,8 @@
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\bin\Debug\TestAplication.exe.config
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\bin\Debug\TestAplication.exe
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\bin\Debug\TestAplication.pdb
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\obj\Debug\TestAplication.csprojResolveAssemblyReference.cache
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\obj\Debug\TestAplication.Properties.Resources.resources
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\obj\Debug\TestAplication.csproj.GenerateResource.Cache
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\obj\Debug\TestAplication.exe
+c:\users\mm27p\documents\visual studio 2015\Projects\TestAplication\TestAplication\obj\Debug\TestAplication.pdb
