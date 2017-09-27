@@ -284,7 +284,6 @@ namespace RS232_GUI
                 }
                 DisableConnectFunction();
                 EnableSettingsFunction();
-                SetControlEnum();
                 ConnectButton.Text = "Rozłącz";
 
 
@@ -319,6 +318,11 @@ namespace RS232_GUI
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void SettingControlFlewComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetControlEnum();
         }
     }
 }

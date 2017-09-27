@@ -931,6 +931,7 @@
             this.SettingControlFlewComboBox.Name = "SettingControlFlewComboBox";
             this.SettingControlFlewComboBox.Size = new System.Drawing.Size(121, 24);
             this.SettingControlFlewComboBox.TabIndex = 15;
+            this.SettingControlFlewComboBox.SelectedIndexChanged += new System.EventHandler(this.SettingControlFlewComboBox_SelectedIndexChanged);
             // 
             // Form1
             // 
