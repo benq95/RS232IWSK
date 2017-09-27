@@ -40,7 +40,7 @@ namespace RS232_GUI
             LogOutput.Enabled = false;
             PingButton.Enabled = false;
             TimePing.Enabled = false;
-                   
+
         }
 
         public void DisableSettingsFunction()
@@ -101,14 +101,14 @@ namespace RS232_GUI
             System.Windows.Forms.MessageBox.Show(message);
         }
 
-    
+
 
         private void OnDataReceived(object sender, EventArgs e)
         {
 
         }
 
-     
+
 
 
 
@@ -222,7 +222,7 @@ namespace RS232_GUI
                 ConnectButton.Text = "Połącz";
                 return;
             }
-            int parityIndex = SettingListParity.SelectedIndex;
+            int parityIndex = SettingParityComboBox.SelectedIndex;
             Parity parity = Parity.None;
             switch (parityIndex)
             {
@@ -237,7 +237,7 @@ namespace RS232_GUI
                     break;
             }
             StopBits stopBits = StopBits.None;
-            int stopBitsIndex = SettingListStop.SelectedIndex;
+            int stopBitsIndex = SettingStopBitComboBox.SelectedIndex;
             switch (stopBitsIndex)
             {
                 case 0:
@@ -248,13 +248,13 @@ namespace RS232_GUI
                     break;
             }
             serialPort = new SerialPort(PortList.SelectedItem.ToString(),
-                Convert.ToInt32(SettingListSpeed.Text),
+                Convert.ToInt32(SettingSpeedComboBox.Text),
                     parity,
-                    Convert.ToInt32(SettingListBitDataPool.SelectedItem),
+                    Convert.ToInt32(SettingDataPoolComboBox.SelectedItem),
                     stopBits);
 
             serialPort.DataReceived += this.OnDataReceived;
-        
+
 
             try
             {
@@ -266,9 +266,9 @@ namespace RS232_GUI
                     return;
                 }
                 DisableConnectFunction();
-                EnableSettingsFunction();             
+                EnableSettingsFunction();
                 ConnectButton.Text = "Rozłącz";
-               
+
 
             }
             catch (Exception ex)
@@ -281,10 +281,26 @@ namespace RS232_GUI
         {
             ReloadPorts();
 
-            SettingListBitDataPool.SelectedIndex = 1;
-            SettingListStop.SelectedIndex = 0;
-            SettingListParity.SelectedIndex = 0;
-            SettingListControlFlew.SelectedIndex = 0;
+            SettingDataPoolComboBox.SelectedIndex = 1;
+            SettingStopBitComboBox.SelectedIndex = 0;
+            SettingParityComboBox.SelectedIndex = 0;
+            SettingControlFlewComboBox.SelectedIndex = 0;
+            SettingSpeedComboBox.SelectedIndex = 4;
+        }
+
+        private void SettingListBitDataPool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SettingListStop_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

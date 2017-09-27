@@ -34,17 +34,12 @@
             this.RSSettingPanel = new System.Windows.Forms.Panel();
             this.SettingPanel = new System.Windows.Forms.Panel();
             this.SettingLabelControl = new System.Windows.Forms.Label();
-            this.SettingListControlFlew = new System.Windows.Forms.ListBox();
             this.SettingLabelSign = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.SettingLabelBitStop = new System.Windows.Forms.Label();
             this.SettingLabelControlBit = new System.Windows.Forms.Label();
             this.SettingLabelDataPool = new System.Windows.Forms.Label();
-            this.SettingListStop = new System.Windows.Forms.ListBox();
-            this.SettingListParity = new System.Windows.Forms.ListBox();
-            this.SettingListBitDataPool = new System.Windows.Forms.ListBox();
             this.SettingLabelSpeed = new System.Windows.Forms.Label();
-            this.SettingListSpeed = new System.Windows.Forms.ListBox();
             this.SettingLabelMain = new System.Windows.Forms.Label();
             this.TerminatorPanel = new System.Windows.Forms.Panel();
             this.RSTerminatorLabel2 = new System.Windows.Forms.Label();
@@ -104,6 +99,11 @@
             this.LogOutput = new System.Windows.Forms.TextBox();
             this.LogIpunt = new System.Windows.Forms.TextBox();
             this.LogLabel = new System.Windows.Forms.Label();
+            this.SettingSpeedComboBox = new System.Windows.Forms.ComboBox();
+            this.SettingDataPoolComboBox = new System.Windows.Forms.ComboBox();
+            this.SettingParityComboBox = new System.Windows.Forms.ComboBox();
+            this.SettingStopBitComboBox = new System.Windows.Forms.ComboBox();
+            this.SettingControlFlewComboBox = new System.Windows.Forms.ComboBox();
             this.TabControl.SuspendLayout();
             this.RS.SuspendLayout();
             this.RSSettingPanel.SuspendLayout();
@@ -155,12 +155,12 @@
             // 
             // SettingPanel
             // 
+            this.SettingPanel.Controls.Add(this.SettingControlFlewComboBox);
+            this.SettingPanel.Controls.Add(this.SettingSpeedComboBox);
             this.SettingPanel.Controls.Add(this.SettingLabelControl);
-            this.SettingPanel.Controls.Add(this.SettingListControlFlew);
             this.SettingPanel.Controls.Add(this.SettingLabelSign);
             this.SettingPanel.Controls.Add(this.panel2);
             this.SettingPanel.Controls.Add(this.SettingLabelSpeed);
-            this.SettingPanel.Controls.Add(this.SettingListSpeed);
             this.SettingPanel.Controls.Add(this.SettingLabelMain);
             this.SettingPanel.Location = new System.Drawing.Point(6, 6);
             this.SettingPanel.Name = "SettingPanel";
@@ -178,19 +178,6 @@
             this.SettingLabelControl.TabIndex = 9;
             this.SettingLabelControl.Text = "Kontrola Przepływu";
             // 
-            // SettingListControlFlew
-            // 
-            this.SettingListControlFlew.FormattingEnabled = true;
-            this.SettingListControlFlew.ItemHeight = 16;
-            this.SettingListControlFlew.Items.AddRange(new object[] {
-            "None",
-            "Handshake",
-            "XON/XOFF"});
-            this.SettingListControlFlew.Location = new System.Drawing.Point(149, 218);
-            this.SettingListControlFlew.Name = "SettingListControlFlew";
-            this.SettingListControlFlew.Size = new System.Drawing.Size(119, 20);
-            this.SettingListControlFlew.TabIndex = 8;
-            // 
             // SettingLabelSign
             // 
             this.SettingLabelSign.AutoSize = true;
@@ -204,16 +191,17 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.SettingStopBitComboBox);
+            this.panel2.Controls.Add(this.SettingParityComboBox);
+            this.panel2.Controls.Add(this.SettingDataPoolComboBox);
             this.panel2.Controls.Add(this.SettingLabelBitStop);
             this.panel2.Controls.Add(this.SettingLabelControlBit);
             this.panel2.Controls.Add(this.SettingLabelDataPool);
-            this.panel2.Controls.Add(this.SettingListStop);
-            this.panel2.Controls.Add(this.SettingListParity);
-            this.panel2.Controls.Add(this.SettingListBitDataPool);
             this.panel2.Location = new System.Drawing.Point(3, 95);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(271, 111);
             this.panel2.TabIndex = 0;
+            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // SettingLabelBitStop
             // 
@@ -249,44 +237,6 @@
             this.SettingLabelDataPool.TabIndex = 10;
             this.SettingLabelDataPool.Text = "Pole Danych";
             // 
-            // SettingListStop
-            // 
-            this.SettingListStop.FormattingEnabled = true;
-            this.SettingListStop.ItemHeight = 16;
-            this.SettingListStop.Items.AddRange(new object[] {
-            "1",
-            "2"});
-            this.SettingListStop.Location = new System.Drawing.Point(154, 73);
-            this.SettingListStop.Name = "SettingListStop";
-            this.SettingListStop.Size = new System.Drawing.Size(111, 20);
-            this.SettingListStop.TabIndex = 9;
-            // 
-            // SettingListParity
-            // 
-            this.SettingListParity.FormattingEnabled = true;
-            this.SettingListParity.ItemHeight = 16;
-            this.SettingListParity.Items.AddRange(new object[] {
-            "E",
-            "O",
-            "N"});
-            this.SettingListParity.Location = new System.Drawing.Point(154, 37);
-            this.SettingListParity.Name = "SettingListParity";
-            this.SettingListParity.Size = new System.Drawing.Size(111, 20);
-            this.SettingListParity.TabIndex = 8;
-            this.SettingListParity.SelectedIndexChanged += new System.EventHandler(this.SettingListControlBit_SelectedIndexChanged);
-            // 
-            // SettingListBitDataPool
-            // 
-            this.SettingListBitDataPool.FormattingEnabled = true;
-            this.SettingListBitDataPool.ItemHeight = 16;
-            this.SettingListBitDataPool.Items.AddRange(new object[] {
-            "7 bit",
-            "8 bit"});
-            this.SettingListBitDataPool.Location = new System.Drawing.Point(154, 3);
-            this.SettingListBitDataPool.Name = "SettingListBitDataPool";
-            this.SettingListBitDataPool.Size = new System.Drawing.Size(111, 20);
-            this.SettingListBitDataPool.TabIndex = 7;
-            // 
             // SettingLabelSpeed
             // 
             this.SettingLabelSpeed.AutoSize = true;
@@ -298,16 +248,6 @@
             this.SettingLabelSpeed.TabIndex = 6;
             this.SettingLabelSpeed.Text = "Szybkość";
             this.SettingLabelSpeed.Click += new System.EventHandler(this.label1_Click_1);
-            // 
-            // SettingListSpeed
-            // 
-            this.SettingListSpeed.FormattingEnabled = true;
-            this.SettingListSpeed.ItemHeight = 16;
-            this.SettingListSpeed.Location = new System.Drawing.Point(157, 31);
-            this.SettingListSpeed.Name = "SettingListSpeed";
-            this.SettingListSpeed.Size = new System.Drawing.Size(111, 20);
-            this.SettingListSpeed.TabIndex = 2;
-            this.SettingListSpeed.SelectedIndexChanged += new System.EventHandler(this.listBox3_SelectedIndexChanged);
             // 
             // SettingLabelMain
             // 
@@ -658,6 +598,7 @@
             this.TimePing.Name = "TimePing";
             this.TimePing.Size = new System.Drawing.Size(100, 22);
             this.TimePing.TabIndex = 8;
+            this.TimePing.Text = "100";
             // 
             // PingButton
             // 
@@ -922,6 +863,75 @@
             this.LogLabel.TabIndex = 4;
             this.LogLabel.Text = "LogInput";
             // 
+            // SettingSpeedComboBox
+            // 
+            this.SettingSpeedComboBox.FormattingEnabled = true;
+            this.SettingSpeedComboBox.Items.AddRange(new object[] {
+            "600",
+            "1200",
+            "2400",
+            "4800",
+            "9600",
+            "14400",
+            "19200",
+            "28800",
+            "38400",
+            "56000",
+            "57600",
+            "115200",
+            "128000",
+            "256000"});
+            this.SettingSpeedComboBox.Location = new System.Drawing.Point(147, 34);
+            this.SettingSpeedComboBox.Name = "SettingSpeedComboBox";
+            this.SettingSpeedComboBox.Size = new System.Drawing.Size(121, 24);
+            this.SettingSpeedComboBox.TabIndex = 8;
+            // 
+            // SettingDataPoolComboBox
+            // 
+            this.SettingDataPoolComboBox.FormattingEnabled = true;
+            this.SettingDataPoolComboBox.Items.AddRange(new object[] {
+            "7",
+            "8"});
+            this.SettingDataPoolComboBox.Location = new System.Drawing.Point(144, 6);
+            this.SettingDataPoolComboBox.Name = "SettingDataPoolComboBox";
+            this.SettingDataPoolComboBox.Size = new System.Drawing.Size(121, 24);
+            this.SettingDataPoolComboBox.TabIndex = 10;
+            // 
+            // SettingParityComboBox
+            // 
+            this.SettingParityComboBox.FormattingEnabled = true;
+            this.SettingParityComboBox.Items.AddRange(new object[] {
+            "E",
+            "O",
+            "N"});
+            this.SettingParityComboBox.Location = new System.Drawing.Point(144, 37);
+            this.SettingParityComboBox.Name = "SettingParityComboBox";
+            this.SettingParityComboBox.Size = new System.Drawing.Size(121, 24);
+            this.SettingParityComboBox.TabIndex = 13;
+            // 
+            // SettingStopBitComboBox
+            // 
+            this.SettingStopBitComboBox.FormattingEnabled = true;
+            this.SettingStopBitComboBox.Items.AddRange(new object[] {
+            "1",
+            "2"});
+            this.SettingStopBitComboBox.Location = new System.Drawing.Point(144, 73);
+            this.SettingStopBitComboBox.Name = "SettingStopBitComboBox";
+            this.SettingStopBitComboBox.Size = new System.Drawing.Size(121, 24);
+            this.SettingStopBitComboBox.TabIndex = 14;
+            // 
+            // SettingControlFlewComboBox
+            // 
+            this.SettingControlFlewComboBox.FormattingEnabled = true;
+            this.SettingControlFlewComboBox.Items.AddRange(new object[] {
+            "None",
+            "Handshake",
+            "XON/XOFF"});
+            this.SettingControlFlewComboBox.Location = new System.Drawing.Point(147, 214);
+            this.SettingControlFlewComboBox.Name = "SettingControlFlewComboBox";
+            this.SettingControlFlewComboBox.Size = new System.Drawing.Size(121, 24);
+            this.SettingControlFlewComboBox.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -979,17 +989,12 @@
         private System.Windows.Forms.Panel RSSettingPanel;
         private System.Windows.Forms.Panel SettingPanel;
         private System.Windows.Forms.Label SettingLabelControl;
-        private System.Windows.Forms.ListBox SettingListControlFlew;
         private System.Windows.Forms.Label SettingLabelSign;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label SettingLabelBitStop;
         private System.Windows.Forms.Label SettingLabelControlBit;
         private System.Windows.Forms.Label SettingLabelDataPool;
-        private System.Windows.Forms.ListBox SettingListStop;
-        private System.Windows.Forms.ListBox SettingListParity;
-        private System.Windows.Forms.ListBox SettingListBitDataPool;
         private System.Windows.Forms.Label SettingLabelSpeed;
-        private System.Windows.Forms.ListBox SettingListSpeed;
         private System.Windows.Forms.Label SettingLabelMain;
         private System.Windows.Forms.Panel TerminatorPanel;
         private System.Windows.Forms.Label RSTerminatorLabel2;
@@ -1046,6 +1051,11 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox TimePing;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox SettingSpeedComboBox;
+        private System.Windows.Forms.ComboBox SettingParityComboBox;
+        private System.Windows.Forms.ComboBox SettingDataPoolComboBox;
+        private System.Windows.Forms.ComboBox SettingControlFlewComboBox;
+        private System.Windows.Forms.ComboBox SettingStopBitComboBox;
     }
 }
 
