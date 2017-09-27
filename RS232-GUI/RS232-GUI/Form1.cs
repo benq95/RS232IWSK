@@ -67,6 +67,24 @@ namespace RS232_GUI
 
         }
 
+        void SetControlEnum()
+        {
+            int index = SettingControlFlewComboBox.SelectedIndex;
+
+            switch (index)
+            {
+                case 0:
+                    serialPort.Handshake = Handshake.None;
+                    break;
+                case 1:
+                    serialPort.Handshake = Handshake.RequestToSend;
+                    break;
+                case 2:
+                    serialPort.Handshake = Handshake.XOnXOff;
+                    break;
+            }
+        }
+
         private void ReloadPorts()
         {
             PortList.DataSource = SerialPort.GetPortNames();
@@ -210,8 +228,7 @@ namespace RS232_GUI
 
         private void ConnectPing_Click(object sender, EventArgs e)
         {
-            DisableSettingsFunction();
-            EnableConnectingFunction();
+       
 
             if (serialPort != null)
                 serialPort.Dispose();   // cannot wait for a garbage collector
@@ -267,6 +284,7 @@ namespace RS232_GUI
                 }
                 DisableConnectFunction();
                 EnableSettingsFunction();
+                SetControlEnum();
                 ConnectButton.Text = "Rozłącz";
 
 
