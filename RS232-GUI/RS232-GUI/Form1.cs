@@ -110,16 +110,6 @@ namespace RS232_GUI
 
      
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            ReloadPorts();
-
-            SettingListBitDataPool.SelectedIndex = 1;
-            SettingListStop.SelectedIndex = 0;
-            SettingListParity.SelectedIndex = 0;
-            SettingListControlFlew.SelectedIndex = 0;
-
-        }
 
 
 
@@ -285,6 +275,16 @@ namespace RS232_GUI
             {
                 LogMessage(ex.Message);
             }
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+            ReloadPorts();
+
+            SettingListBitDataPool.SelectedIndex = 1;
+            SettingListStop.SelectedIndex = 0;
+            SettingListParity.SelectedIndex = 0;
+            SettingListControlFlew.SelectedIndex = 0;
         }
     }
 }
