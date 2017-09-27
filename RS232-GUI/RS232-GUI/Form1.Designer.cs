@@ -59,12 +59,17 @@
             this.RSTerminatorButtonNone = new System.Windows.Forms.RadioButton();
             this.RSTerminatorLabel = new System.Windows.Forms.Label();
             this.Modbus = new System.Windows.Forms.TabPage();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.MasterPanel = new System.Windows.Forms.Panel();
+            this.SlavePanel = new System.Windows.Forms.Panel();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.SlaveButtonRadio = new System.Windows.Forms.RadioButton();
-            this.SlavePanel = new System.Windows.Forms.Panel();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -77,9 +82,9 @@
             this.TimePing = new System.Windows.Forms.TextBox();
             this.PingButton = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.portComboBox = new System.Windows.Forms.ComboBox();
             this.ConnectRadioButton = new System.Windows.Forms.RadioButton();
             this.ConnectButton = new System.Windows.Forms.Button();
-            this.PortList = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.RSReceivePanel = new System.Windows.Forms.Panel();
             this.ReceiveLabelASCII = new System.Windows.Forms.Label();
@@ -100,10 +105,7 @@
             this.LogOutput = new System.Windows.Forms.TextBox();
             this.LogIpunt = new System.Windows.Forms.TextBox();
             this.LogLabel = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.button1 = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.RS.SuspendLayout();
             this.RSSettingPanel.SuspendLayout();
@@ -112,18 +114,18 @@
             this.TerminatorPanel.SuspendLayout();
             this.TerminatorPanelCustom.SuspendLayout();
             this.Modbus.SuspendLayout();
-            this.MasterPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.SlavePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             this.ConnectionPanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.RSReceivePanel.SuspendLayout();
             this.RSSendingPanel.SuspendLayout();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // TabControl
@@ -152,6 +154,7 @@
             // RSSettingPanel
             // 
             this.RSSettingPanel.BackColor = System.Drawing.Color.DarkGray;
+            this.RSSettingPanel.Controls.Add(this.button1);
             this.RSSettingPanel.Controls.Add(this.SettingPanel);
             this.RSSettingPanel.Controls.Add(this.TerminatorPanel);
             this.RSSettingPanel.Location = new System.Drawing.Point(2, 0);
@@ -433,6 +436,7 @@
             this.RSTerminatorButtonCustomAccept.TabIndex = 0;
             this.RSTerminatorButtonCustomAccept.Text = "Ustaw";
             this.RSTerminatorButtonCustomAccept.UseVisualStyleBackColor = true;
+            this.RSTerminatorButtonCustomAccept.Click += new System.EventHandler(this.RSTerminatorButtonCustomAccept_Click);
             // 
             // RSTerminatorTextCustom
             // 
@@ -470,6 +474,7 @@
             // RSTerminatorButtonNone
             // 
             this.RSTerminatorButtonNone.AutoSize = true;
+            this.RSTerminatorButtonNone.Checked = true;
             this.RSTerminatorButtonNone.Location = new System.Drawing.Point(4, 28);
             this.RSTerminatorButtonNone.Margin = new System.Windows.Forms.Padding(2);
             this.RSTerminatorButtonNone.Name = "RSTerminatorButtonNone";
@@ -499,7 +504,6 @@
             this.Modbus.Controls.Add(this.numericUpDown3);
             this.Modbus.Controls.Add(this.label6);
             this.Modbus.Controls.Add(this.label7);
-            this.Modbus.Controls.Add(this.MasterPanel);
             this.Modbus.Controls.Add(this.SlavePanel);
             this.Modbus.Location = new System.Drawing.Point(4, 22);
             this.Modbus.Margin = new System.Windows.Forms.Padding(2);
@@ -508,6 +512,35 @@
             this.Modbus.Size = new System.Drawing.Size(218, 472);
             this.Modbus.TabIndex = 1;
             this.Modbus.Text = "MODBUS";
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Location = new System.Drawing.Point(85, 68);
+            this.numericUpDown7.Maximum = new decimal(new int[] {
+            247,
+            0,
+            0,
+            0});
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown7.TabIndex = 19;
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Location = new System.Drawing.Point(41, 37);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown3.TabIndex = 18;
             // 
             // label6
             // 
@@ -533,22 +566,59 @@
             this.label7.TabIndex = 15;
             this.label7.Text = "Odstęp między znakami";
             // 
-            // MasterPanel
+            // SlavePanel
             // 
-            this.MasterPanel.Controls.Add(this.label5);
-            this.MasterPanel.Controls.Add(this.SlaveButtonRadio);
-            this.MasterPanel.Location = new System.Drawing.Point(10, 111);
-            this.MasterPanel.Margin = new System.Windows.Forms.Padding(2);
-            this.MasterPanel.Name = "MasterPanel";
-            this.MasterPanel.Size = new System.Drawing.Size(195, 44);
-            this.MasterPanel.TabIndex = 10;
+            this.SlavePanel.Controls.Add(this.numericUpDown1);
+            this.SlavePanel.Controls.Add(this.label11);
+            this.SlavePanel.Controls.Add(this.label5);
+            this.SlavePanel.Controls.Add(this.SlaveButtonRadio);
+            this.SlavePanel.Controls.Add(this.numericUpDown2);
+            this.SlavePanel.Controls.Add(this.numericUpDown6);
+            this.SlavePanel.Controls.Add(this.label9);
+            this.SlavePanel.Controls.Add(this.label8);
+            this.SlavePanel.Controls.Add(this.label1);
+            this.SlavePanel.Controls.Add(this.MasterButtonRadio);
+            this.SlavePanel.Location = new System.Drawing.Point(11, 119);
+            this.SlavePanel.Margin = new System.Windows.Forms.Padding(2);
+            this.SlavePanel.Name = "SlavePanel";
+            this.SlavePanel.Size = new System.Drawing.Size(195, 237);
+            this.SlavePanel.TabIndex = 9;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Location = new System.Drawing.Point(72, 123);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 23;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.DimGray;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.label11.Location = new System.Drawing.Point(12, 126);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(56, 17);
+            this.label11.TabIndex = 22;
+            this.label11.Text = "Tmeout";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.DimGray;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label5.Location = new System.Drawing.Point(43, 3);
+            this.label5.Location = new System.Drawing.Point(46, 156);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 25);
@@ -558,7 +628,7 @@
             // SlaveButtonRadio
             // 
             this.SlaveButtonRadio.AutoSize = true;
-            this.SlaveButtonRadio.Location = new System.Drawing.Point(3, 3);
+            this.SlaveButtonRadio.Location = new System.Drawing.Point(6, 156);
             this.SlaveButtonRadio.Margin = new System.Windows.Forms.Padding(2);
             this.SlaveButtonRadio.Name = "SlaveButtonRadio";
             this.SlaveButtonRadio.Size = new System.Drawing.Size(14, 13);
@@ -566,19 +636,39 @@
             this.SlaveButtonRadio.TabStop = true;
             this.SlaveButtonRadio.UseVisualStyleBackColor = true;
             // 
-            // SlavePanel
+            // numericUpDown2
             // 
-            this.SlavePanel.Controls.Add(this.numericUpDown2);
-            this.SlavePanel.Controls.Add(this.numericUpDown6);
-            this.SlavePanel.Controls.Add(this.label9);
-            this.SlavePanel.Controls.Add(this.label8);
-            this.SlavePanel.Controls.Add(this.label1);
-            this.SlavePanel.Controls.Add(this.MasterButtonRadio);
-            this.SlavePanel.Location = new System.Drawing.Point(10, 202);
-            this.SlavePanel.Margin = new System.Windows.Forms.Padding(2);
-            this.SlavePanel.Name = "SlavePanel";
-            this.SlavePanel.Size = new System.Drawing.Size(195, 117);
-            this.SlavePanel.TabIndex = 9;
+            this.numericUpDown2.Location = new System.Drawing.Point(111, 83);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(72, 20);
+            this.numericUpDown2.TabIndex = 21;
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Location = new System.Drawing.Point(72, 46);
+            this.numericUpDown6.Maximum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown6.TabIndex = 20;
+            this.numericUpDown6.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label9
             // 
@@ -696,14 +786,38 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.portComboBox);
             this.panel3.Controls.Add(this.ConnectRadioButton);
             this.panel3.Controls.Add(this.ConnectButton);
-            this.panel3.Controls.Add(this.PortList);
             this.panel3.Location = new System.Drawing.Point(4, 19);
             this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(166, 115);
             this.panel3.TabIndex = 2;
+            // 
+            // portComboBox
+            // 
+            this.portComboBox.FormattingEnabled = true;
+            this.portComboBox.Items.AddRange(new object[] {
+            "600",
+            "1200",
+            "2400",
+            "4800",
+            "9600",
+            "14400",
+            "19200",
+            "28800",
+            "38400",
+            "56000",
+            "57600",
+            "115200",
+            "128000",
+            "256000"});
+            this.portComboBox.Location = new System.Drawing.Point(2, 32);
+            this.portComboBox.Margin = new System.Windows.Forms.Padding(2);
+            this.portComboBox.Name = "portComboBox";
+            this.portComboBox.Size = new System.Drawing.Size(76, 21);
+            this.portComboBox.TabIndex = 16;
             // 
             // ConnectRadioButton
             // 
@@ -729,15 +843,6 @@
             this.ConnectButton.Text = "Połącz";
             this.ConnectButton.UseVisualStyleBackColor = true;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectPing_Click);
-            // 
-            // PortList
-            // 
-            this.PortList.FormattingEnabled = true;
-            this.PortList.Location = new System.Drawing.Point(0, 33);
-            this.PortList.Margin = new System.Windows.Forms.Padding(2);
-            this.PortList.Name = "PortList";
-            this.PortList.Size = new System.Drawing.Size(84, 17);
-            this.PortList.TabIndex = 0;
             // 
             // label3
             // 
@@ -972,68 +1077,15 @@
             this.LogLabel.TabIndex = 4;
             this.LogLabel.Text = "LogInput";
             // 
-            // numericUpDown3
+            // button1
             // 
-            this.numericUpDown3.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Location = new System.Drawing.Point(41, 37);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown3.TabIndex = 18;
-            // 
-            // numericUpDown7
-            // 
-            this.numericUpDown7.Location = new System.Drawing.Point(85, 68);
-            this.numericUpDown7.Maximum = new decimal(new int[] {
-            247,
-            0,
-            0,
-            0});
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown7.TabIndex = 19;
-            // 
-            // numericUpDown6
-            // 
-            this.numericUpDown6.Location = new System.Drawing.Point(72, 46);
-            this.numericUpDown6.Maximum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDown6.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown6.TabIndex = 20;
-            this.numericUpDown6.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(111, 83);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(72, 20);
-            this.numericUpDown2.TabIndex = 21;
+            this.button1.Location = new System.Drawing.Point(4, 444);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Clear buffer";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Form1
             // 
@@ -1063,10 +1115,13 @@
             this.TerminatorPanelCustom.PerformLayout();
             this.Modbus.ResumeLayout(false);
             this.Modbus.PerformLayout();
-            this.MasterPanel.ResumeLayout(false);
-            this.MasterPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             this.SlavePanel.ResumeLayout(false);
             this.SlavePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             this.ConnectionPanel.ResumeLayout(false);
             this.ConnectionPanel.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -1079,10 +1134,6 @@
             this.RSSendingPanel.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1116,7 +1167,6 @@
         private System.Windows.Forms.RadioButton RSTerminatorButtonCR;
         private System.Windows.Forms.RadioButton RSTerminatorButtonNone;
         private System.Windows.Forms.Label RSTerminatorLabel;
-        private System.Windows.Forms.Panel MasterPanel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RadioButton SlaveButtonRadio;
         private System.Windows.Forms.Panel SlavePanel;
@@ -1128,7 +1178,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.RadioButton ConnectRadioButton;
         private System.Windows.Forms.Button ConnectButton;
-        private System.Windows.Forms.ListBox PortList;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel RSReceivePanel;
         private System.Windows.Forms.Label ReceiveLabelASCII;
@@ -1164,6 +1213,10 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.ComboBox portComboBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

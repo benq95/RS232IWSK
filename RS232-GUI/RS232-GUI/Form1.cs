@@ -20,25 +20,43 @@ namespace RS232_GUI
         byte[] pongArr = new byte[] { 80, 79, 78, 71 };
         byte[] pingArr = new byte[] { 80, 73, 78, 71 };
         private Timer timer = new Timer();
+        private Timer frameTimer = new Timer();
         List<byte> buffer = new List<byte>();
-        bool isTransaction = false;
-        bool pingWait = false;
+        static volatile bool  isTransaction = false;
+        static volatile bool pingWait = false;
+        static volatile bool partFrame = false;
+        static volatile bool terminatorReceived = true;
+        static volatile byte[] terminator;
         int retransmisions = 0;
         byte[] lastSentMsg;
+        static volatile bool mode = false;//false rs232 true modbus
+        private static readonly System.Object lockThis = new System.Object();
 
         public Form1()
         {
             InitializeComponent();
             DisableConnectFunction();
             timer.Tick += this.Timer_Tick;
+            TabControl.SelectedIndexChanged += this.OnTabChanged;
+            frameTimer.Tick += FrameTimer_Tick;
+        }
 
+        private void FrameTimer_Tick(object sender, EventArgs e)
+        {
+            if (partFrame)
+            {
+                frameTimer.Stop();
+                buffer.Clear();
+                partFrame = false;
+            }
+            
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            timer.Stop();
             if (isTransaction)
             {
-                timer.Stop();
                 buffer.Clear();
                 if (retransmisions > 0)
                 {
@@ -52,7 +70,8 @@ namespace RS232_GUI
                     if (pingWait)
                     {
                         LogMessage("Ping timeout");
-                    } else
+                    }
+                    else
                     {
                         LogMessage("Transakcja zakończona niepowodzeniem");
                     }
@@ -61,6 +80,7 @@ namespace RS232_GUI
                     retransmisions = 0;
                 }
             }
+
         }
 
         public void DisableConnectFunction()
@@ -121,11 +141,11 @@ namespace RS232_GUI
 
         private void ReloadPorts()
         {
-            PortList.DataSource = SerialPort.GetPortNames();
+            portComboBox.DataSource = SerialPort.GetPortNames();
 
-            if (PortList.Items.Count > 0)
+            if (portComboBox.Items.Count > 0)
             {
-                PortList.SelectedIndex = 0;
+                portComboBox.SelectedIndex = 0;
                 ConnectButton.Enabled = true;
             }
             else
@@ -142,103 +162,182 @@ namespace RS232_GUI
 
         private void OnDataReceived(object sender, EventArgs e)
         {
-            int bytes = serialPort.BytesToRead;
-            byte[] buff = new byte[bytes];
-            LogIpunt.AppendText("Odebrano wiadomość:/n" + StringParser.ByteToDisplay(buff, DataFormat.HEX) + " -> " + StringParser.ByteToDisplay(buff));
-            serialPort.Read(buff, 0, bytes);
-            buffer.AddRange(buff);
-            if (pingWait)
+            lock (lockThis)
             {
-                if (buffer.Count < 4)
+                int bytes = serialPort.BytesToRead;
+                byte[] buff = new byte[bytes];
+                serialPort.Read(buff, 0, bytes);
+                InvokeOrNot(() =>
                 {
-                    return;
-                }
-                else
-                {
-                    if (IsPong(buffer.ToArray()))
+                    if (mode)
                     {
-                        LogMessage("Ping sukces");
-                        EndTransaction();
+                        LogIpunt.AppendText("Odebrano wiadomość:\n" + StringParser.ByteToDisplay(buff, DataFormat.HEX) + " -> " + StringParser.ByteToDisplay(buff) + "\n");
                         return;
                     }
-                }
-            }
-            if (IsPing(buff))
-            {
-                this.sendMsg(pongArr);
-                buffer.Clear();
-                return;
-            }
-            if (TabControl.SelectedTab.Text == "RS232")
-            {
-                buffer.Clear();
-                return;
-            }
-            //tutaj modbus
-            int beginIndex = buffer.FindIndex((byte x) => { return x == 58; });
-            if(beginIndex == -1)
-            {
-                buffer.Clear();
-                return;
-            }
-            for(int i = 0; i < beginIndex; i++)
-            {
-                buffer.RemoveAt(0);
-            }
-            if(buffer.Count >= 3)
-            {
-                if((buffer[buffer.Count -1] == 10)&&(buffer[buffer.Count-2] == 13))
+                    if(terminator == null)
+                    {
+                        LogIpunt.AppendText("Odebrano wiadomość:\n" + StringParser.ByteToDisplay(buff, DataFormat.HEX) + " -> " + StringParser.ByteToDisplay(buff) + "\n");
+                        return;
+                    }
+                    if(terminator.Length == 0)
+                    {
+                        LogIpunt.AppendText("Odebrano wiadomość:\n" + StringParser.ByteToDisplay(buff, DataFormat.HEX) + " -> " + StringParser.ByteToDisplay(buff) + "\n");
+                        return;
+                    }
+                    if(buffer.Count < terminator.Length)
+                    {
+                        terminatorReceived = false;
+                        return;
+                    }
+                    
+                    
+                }, LogIpunt);
+                frameTimer.Stop();
+                partFrame = false;
+                buffer.AddRange(buff);
+                if (pingWait)
                 {
-                    if(!StringParser.CheckModbusMessage(buffer.ToArray(), (byte)numericUpDown7.Value))
+                    if (buffer.Count < 4)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (IsPong(buffer.ToArray()))
+                        {
+                            pingWait = false;
+                            isTransaction = false;
+                            LogMessage("Ping sukces");
+                            EndTransaction();
+                            return;
+                        }
+                    }
+                }
+                if (IsPing(buff))
+                {
+                    this.sendMsg(pongArr);
+                    buffer.Clear();
+                    return;
+                }
+                if (!mode)
+                {
+                    if(terminatorReceived)
                     {
                         buffer.Clear();
-                        LogIpunt.AppendText("Niepoprawna ramka/n");
-                        return;
                     }
-                } else
-                {
                     return;
                 }
-            } else
-            {
-                return;
-            }
-            if (MasterButtonRadio.Checked)
-            {
-                if (!isTransaction)
+                //tutaj modbus
+                int beginIndex = buffer.FindIndex((byte x) => { return x == 58; });
+                if (beginIndex == -1)
                 {
                     buffer.Clear();
                     return;
                 }
-                LogMessage("Transakcja zakończona powodzeniem");
-                if(numericUpDown6.Value == 2)
+                for (int i = 0; i < beginIndex; i++)
                 {
-                    ReceiveTextPanelASCII.AppendText(StringParser.ByteToDisplay(StringParser.GetModbusMessage(buffer.ToArray())));
-                } else
-                {
-                    ReceiveTextPanelASCII.AppendText("/n");
+                    buffer.RemoveAt(0);
                 }
-                ReceiveTextPanelFrame.AppendText(StringParser.ByteToDisplay(buffer.ToArray()));
+                if (buffer.Count >= 3)
+                {
+                    if ((buffer[buffer.Count - 1] == 10) && (buffer[buffer.Count - 2] == 13))
+                    {
+                        if (!StringParser.CheckModbusMessage(buffer.ToArray(), (byte)numericUpDown7.Value))
+                        {
+                            buffer.Clear();
+                            InvokeOrNot(() =>
+                            {
+                                LogIpunt.AppendText("Niepoprawna ramka\n");
+                            }, LogIpunt);
+
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        frameTimer.Interval = numericUpDown3.Value == 0 ? 1 : (int)numericUpDown3.Value;
+                        partFrame = true;
+                        frameTimer.Start();
+                        return;
+                    }
+                }
+                else
+                {
+                    frameTimer.Interval = numericUpDown3.Value == 0 ? 1 : (int)numericUpDown3.Value;
+                    partFrame = true;
+                    frameTimer.Start();
+                    return;
+                }
+                if (MasterButtonRadio.Checked)
+                {
+                    if (!isTransaction)
+                    {
+                        buffer.Clear();
+                        return;
+                    }
+                    isTransaction = false;
+                    timer.Stop();
+                    LogMessage("Transakcja zakończona powodzeniem");
+
+
+                    if (numericUpDown6.Value == 2)
+                    {
+
+                        InvokeOrNot(() =>
+                        {
+                            ReceiveTextPanelASCII.AppendText(StringParser.ByteToDisplay(StringParser.GetModbusMessage(buffer.ToArray())) + "\n");
+                        }, ReceiveTextPanelASCII);
+                    }
+                    else
+                    {
+                        InvokeOrNot(() =>
+                        {
+                            ReceiveTextPanelASCII.AppendText("\n");
+                        }, ReceiveTextPanelASCII);
+                    }
+                    InvokeOrNot(() =>
+                    {
+                        ReceiveTextPanelFrame.AppendText(StringParser.ByteToDisplay(buffer.ToArray()) + "\n");
+                    }, ReceiveTextPanelFrame);
+                    buffer.Clear();
+                    EndTransaction();
+                    return;
+                }
+                if (buffer[4] == 50)
+                {
+                    string msgString = StringParser
+                    .FormatMessageToModbus(textBox1.Text, 2, (byte)numericUpDown7.Value);
+                    byte[] msg = StringParser.StrToByteArray(msgString);
+                    sendMsg(msg);
+                    buffer.Clear();
+                    return;
+                }
+                else
+                {
+                    InvokeOrNot(() =>
+                    {
+                        ReceiveTextPanelASCII.AppendText(StringParser.ByteToDisplay(StringParser.GetModbusMessage(buffer.ToArray())) + "\n");
+                    }, ReceiveTextPanelASCII);
+                    InvokeOrNot(() =>
+                    {
+                        ReceiveTextPanelFrame.AppendText(StringParser.ByteToDisplay(buffer.ToArray()) + "\n");
+                    }, ReceiveTextPanelFrame);
+                }
+                if ((buffer[1] == 48) && ((buffer[2] == 48)))
+                {
+
+                }
+                else
+                {
+                    string msgString = StringParser
+                    .FormatMessageToModbus("", 1, (byte)numericUpDown7.Value);
+                    byte[] msg = StringParser.StrToByteArray(msgString);
+                    sendMsg(msg);
+                }
                 buffer.Clear();
-                EndTransaction();
-                return;
+                //wypisz co dostales
             }
-            if(buffer[4] == 50)
-            {
-                string msgString = StringParser
-                .FormatMessageToModbus(textBox1.Text, 2, (byte)numericUpDown7.Value);
-                byte[] msg = StringParser.StrToByteArray(msgString);
-                sendMsg(msg);
-            }
-            if((buffer[1] == 48)&&((buffer[2] == 48)))
-            {
-                string msgString = StringParser
-                .FormatMessageToModbus("", 1, (byte)numericUpDown7.Value);
-                byte[] msg = StringParser.StrToByteArray(msgString);
-                sendMsg(msg);
-            }
-            buffer.Clear();
-            //wypisz co dostales
+
         }
 
         #region Śmieci
@@ -396,7 +495,7 @@ namespace RS232_GUI
                     stopBits = StopBits.Two;
                     break;
             }
-            serialPort = new SerialPort(PortList.SelectedItem.ToString(),
+            serialPort = new SerialPort(portComboBox.SelectedItem.ToString(),
                 Convert.ToInt32(SettingSpeedComboBox.Text),
                     parity,
                     Convert.ToInt32(SettingDataPoolComboBox.SelectedItem),
@@ -442,6 +541,10 @@ namespace RS232_GUI
             try
             {
                 serialPort.Write(msg, 0, msg.Length);
+                InvokeOrNot(() =>
+                {
+                    LogOutput.AppendText("Wysłano:\n" + StringParser.ByteToDisplay(msg, DataFormat.HEX) + " => " + StringParser.ByteToDisplay(msg) + "\n");
+                }, LogOutput);
                 lastSentMsg = msg;
             }
             catch (Exception ex)
@@ -457,7 +560,7 @@ namespace RS232_GUI
                 timer.Interval = Convert.ToInt32(TimePing.Text) == 0 ? 1 : Convert.ToInt32(TimePing.Text);
             } else
             {
-                timer.Interval = numericUpDown3.Value == 0 ? 1 : (int)numericUpDown3.Value;
+                timer.Interval = numericUpDown1.Value == 0 ? 1 : (int)numericUpDown1.Value;
                 retransmisions = (int)numericUpDown2.Value;
             }
             timer.Start();
@@ -524,10 +627,20 @@ namespace RS232_GUI
 
         private void SendButton_Click(object sender, EventArgs e)
         {
-            if(TabControl.SelectedTab.Text == "RS232")
+            if(!mode)
             {
-                sendMsg(StringParser.StrToByteArray(textBox1.Text));
-                LogOutput.AppendText("Wysłano:/n" + textBox1.Text + "/n");
+                List<byte> msgToSend = new List<byte>();
+                msgToSend.AddRange(StringParser.StrToByteArray(textBox1.Text));
+                if(terminator != null)
+                {
+                    msgToSend.AddRange(terminator);
+                }
+                sendMsg(msgToSend.ToArray());
+                InvokeOrNot(() =>
+                {
+                    LogOutput.AppendText("Wysłano:\n" + textBox1.Text + "\n");
+                }, LogOutput);
+                
                 return;
             }
             if((numericUpDown7.Value == 0) && (numericUpDown6.Value == 2))
@@ -547,6 +660,62 @@ namespace RS232_GUI
                 }
                 sendMsg(msg);
             }
+        }
+
+        private void InvokeOrNot(Action f, Control ctrl)
+        {
+            if (ctrl.InvokeRequired)
+                ctrl.Invoke(f);
+            else
+                f.Invoke();
+        }
+
+        private void OnTabChanged(object sender, EventArgs e)
+        {
+            InvokeOrNot(() =>
+            {
+                if (TabControl.SelectedTab.Text == "RS232")
+                {
+                    mode = false;
+                } else
+                {
+                    mode = true;
+                }
+            }, LogOutput);
+        }
+
+        private void RSTerminatorButtonCustomAccept_Click(object sender, EventArgs e)
+        {
+            if (RSTerminatorButtonNone.Checked)
+            {
+                terminator = null;
+                return;
+            }
+            if (RSTerminatorButtonCR.Checked)
+            {
+                terminator = new byte[] { 13 };
+            }
+            if (RSTerminatorButtonLF.Checked)
+            {
+                terminator = new byte[] { 10 };
+            }
+            if (RSTerminatorButtonCRLF.Checked)
+            {
+                terminator = new byte[] { 13, 10 };
+            }
+            if (RSTerminatorButtonCustom.Checked)
+            {
+                terminator = StringParser.StrToByteArray(RSTerminatorTextCustom.Text);
+            }
+            RSTerminatorTextCurrent.Text = terminator == null ? "" : StringParser.ByteToDisplay(terminator);
+            buffer.Clear();
+            terminatorReceived = true
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            buffer.Clear();
+            terminatorReceived = true
         }
     }
 }
